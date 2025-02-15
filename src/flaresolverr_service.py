@@ -257,6 +257,7 @@ def click_verify(driver: WebDriver):
     try:
         logging.debug("Try to find the Cloudflare verify checkbox...")
         iframe = driver.find_element(By.XPATH, "//iframe[starts-with(@id, 'cf-chl-widget-')]")
+        logging.debug("Frame found!")
         driver.switch_to.frame(iframe)
         checkbox = driver.find_element(
             by=By.XPATH,
@@ -279,6 +280,7 @@ def click_verify(driver: WebDriver):
             by=By.XPATH,
             value="//input[@type='button' and @value='Verify you are human']",
         )
+        logging.debug("button found!")
         if button:
             actions = ActionChains(driver)
             actions.move_to_element_with_offset(button, 5, 7)
