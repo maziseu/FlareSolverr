@@ -40,6 +40,7 @@ def get_flaresolverr_version() -> str:
         FLARESOLVERR_VERSION = json.loads(f.read())['version']
         return FLARESOLVERR_VERSION
 
+
 def get_current_platform() -> str:
     global PLATFORM_VERSION
     if PLATFORM_VERSION is not None:
@@ -122,6 +123,19 @@ def create_proxy_extension(proxy: dict) -> str:
     return proxy_extension_dir
 
 
+def set_open_shadow_root(driver):
+    init_script = """
+    Element.prototype._attachShadow = Element.prototype.attachShadow;
+    Element.prototype.attachShadow = function(config) {
+        config.mode = 'open';
+        return this._attachShadow(config);
+    };
+    """
+    driver.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {
+        'source': init_script
+    })
+
+
 def get_webdriver(proxy: dict = None) -> WebDriver:
     global PATCHED_DRIVER_PATH, USER_AGENT
     logging.debug('Launching web browser...')
@@ -199,6 +213,7 @@ def get_webdriver(proxy: dict = None) -> WebDriver:
         driver = uc.Chrome(options=options, browser_executable_path=browser_executable_path,
                            driver_executable_path=driver_exe_path, version_main=version_main,
                            windows_headless=windows_headless, headless=get_config_headless())
+        set_open_shadow_root(driver)
     except Exception as e:
         logging.error("Error starting Chrome: %s" % e)
 

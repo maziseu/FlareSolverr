@@ -41,7 +41,8 @@ CHALLENGE_TITLES = [
 ]
 CHALLENGE_SELECTORS = [
     # Cloudflare
-    '#cf-challenge-running', '.ray_id', '.attack-box', '#cf-please-wait', '#challenge-spinner', '#trk_jschal_js', '#turnstile-wrapper', '.lds-ring',
+    '#cf-challenge-running', '.ray_id', '.attack-box', '#cf-please-wait', '#challenge-spinner', '#trk_jschal_js',
+    '#turnstile-wrapper', '.lds-ring',
     # Custom CloudFlare for EbookParadijs, Film-Paleis, MuziekFabriek and Puur-Hollands
     'td.info #js_info',
     # Fairlane / pararius.com
@@ -310,7 +311,6 @@ def _evil_logic(req: V1RequestBase, driver: WebDriver, method: str) -> Challenge
     res = ChallengeResolutionT({})
     res.status = STATUS_OK
     res.message = ""
-
 
     # navigate to the page
     logging.debug(f'Navigating to... {req.url}')
